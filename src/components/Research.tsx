@@ -1,319 +1,234 @@
-import React from "react";
-import {
-  BookOpen,
-  Microscope,
-  Zap,
-  Building,
-  FileText,
-  ExternalLink,
-  Droplet,
-  PenTool,
-  BarChart4,
-} from "lucide-react";
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, ExternalLink, BookOpen, Microscope, Zap, Building } from 'lucide-react';
 
-const Research = () => {
-  const researchAreas = [
-    {
-      title: "Pavement Distress Detection with CNN",
-      icon: Zap,
-      description:
-        "Developed a Python-based convolutional neural network model to detect pavement distress from images using OpenCV and mobile camera input. Applied to real-world dataset from Kaduna, Nigeria.",
-      status: "Ongoing",
-      color: "from-purple-500 to-pink-600",
-      publications: 1,
-      keywords: ["Computer Vision", "CNN", "OpenCV", "Infrastructure"],
-    },
-    {
-      title: "Bulldozer Price Prediction Model",
-      icon: BarChart4,
-      description:
-        "Created a time-series Random Forest model to predict bulldozer sale prices from 1990–2015 data, achieving 88.9% accuracy. Focus on regression and EDA techniques in supervised learning.",
-      status: "Completed",
-      color: "from-slate-600 to-gray-700",
-      publications: 1,
-      keywords: ["Machine Learning", "EDA", "Time Series", "Random Forest"],
-    },
-    {
-      title: "British DoE Concrete Mix Design Optimization",
-      icon: PenTool,
-      description:
-        "Developed a Python-based predictive model using British DOE methodology for concrete mix ratio estimation. Validated with lab data and deployed in a mobile application for civil engineers.",
-      status: "Published",
-      color: "from-orange-500 to-amber-600",
-      publications: 1,
-      keywords: [
-        "Concrete Design",
-        "ML in Civil Engineering",
-        "DoE Method",
-        "Python",
-      ],
-    },
-    {
-      title: "Water Quality Forecasting Using ANN",
-      icon: Droplet,
-      description:
-        "Built an ANN model using MATLAB to forecast water quality parameters like pH and chlorine based on geographic data. Achieved 91.2% accuracy using data from Shiroro and surrounding regions.",
-      status: "Completed",
-      color: "from-teal-500 to-cyan-700",
-      publications: 1,
-      keywords: ["Water Quality", "ANN", "MATLAB", "Environmental Engineering"],
-    },
-    {
-      title: "Civil Infrastructure Health Monitoring",
-      icon: Building,
-      description:
-        "IoT-based monitoring systems for real-time assessment of structural health and predictive maintenance.",
-      status: "In Progress",
-      color: "from-green-500 to-teal-600",
-      publications: 0,
-      keywords: ["IoT", "Structural Health", "Predictive Analytics", "Sensors"],
-    },
-    {
-      title: "AI in Civil Engineering",
-      icon: BookOpen,
-      description:
-        "Integration of artificial intelligence and machine learning techniques in traditional civil engineering practices.",
-      status: "Ongoing",
-      color: "from-amber-500 to-orange-600",
-      publications: 3,
-      keywords: [
-        "Machine Learning",
-        "Engineering Automation",
-        "Digital Transformation",
-        "AI Applications",
-      ],
-    },
-  ];
+const researchAreas = [
+  {
+    num: '01',
+    title: 'British DoE Concrete Mix Design Procedure Using Python',
+    status: 'Published',
+    publications: 1,
+    description: 'Developed a Python algorithm automating the British DoE concrete mix design procedure by converting empirical charts and interpolation tables into linear and polynomial equations, eliminating manual computation error. Validated against manual DoE calculations and published datasets across multiple design examples, percentage errors ranged from 0.65% to 3.0%, with a mean absolute error of 4.3%. Resulted in a peer-reviewed publication in the Nile Journal of Engineering and Applied Science (2025). DOI: 10.5455/njeas.238594',
+    keywords: ['Python', 'British DoE Method', 'Concrete Mix Design', 'Algorithm Development'],
+  },
+  {
+    num: '02',
+    title: 'Pavement Distress Detection Using Deep Learning',
+    status: 'Under Review',
+    publications: 1,
+    description: 'Collaborative research using images collected in Kaduna, Nigeria. Designed and trained a Convolutional Neural Network on a dataset of 30,000 labelled pavement images, achieving distress classification across multiple failure types. Built a mobile application integrating the exported TensorFlow Lite model with real-time GPS tagging, detection logging, and Google Maps visualisation of historical distress locations. Demonstrates the viability of deep learning for scalable, low-cost pavement condition monitoring in infrastructure-constrained environments. Under review, 2026.',
+    keywords: ['CNN', 'TensorFlow Lite', 'OpenCV', 'FastAPI', 'Google Maps SDK', 'Infrastructure'],
+  },
+  {
+    num: '03',
+    title: 'Concrete Mix Design Using Machine Learning',
+    status: 'Completed',
+    publications: 0,
+    description: 'Case study of Shiroro, Dama, and Gidan Mangoro communities, Niger State. Developed a Random Forest ensemble model trained on 712 real-world mix design records to simultaneously predict concrete mix ratios. Benchmarked four algorithms (Linear Regression, Decision Tree, Random Forest, XGBoost). Random Forest achieved R² = 0.91 and MAE = 0.08, confirmed stable via 5-fold cross-validation. Fine fraction (importance: 0.31) and paste volume (0.18) identified as dominant predictors.',
+    keywords: ['Random Forest', 'Scikit-Learn', 'Cross-Validation', 'Feature Engineering', 'Civil Engineering'],
+  },
+  {
+    num: '04',
+    title: 'BuildCore, Sustainable Construction Management Platform',
+    status: 'Ongoing',
+    publications: 0,
+    description: 'Developing BuildCore, a construction management platform integrating Bills of Quantities (BoQ) with embodied carbon accounting to quantify project emissions and potential carbon credit generation. Constructing an extensible material database incorporating lifecycle assessment (LCA) metrics and AI/ML optimisation models for adaptive material selection aligned with net-zero construction targets. Designing an intelligent material substitution framework recommending lower-carbon alternatives guided by performance, cost, and environmental constraints.',
+    keywords: ['Django', 'React Native', 'LCA', 'Embodied Carbon', 'AI Optimisation', 'Net-Zero'],
+  },
+];
 
-  const publications = [
-    {
-      title:
-        "Development of a Simplified Methodology for British DoE Concrete Mix Design Procedure Using Python",
-      journal: "Nile Journal of Engineering and Applied Science",
-      year: "2025",
-      type: "Research Paper",
-      status: "Published",
-      link: "https://doi.org/10.5455/njeas.238594",
-    },
-    {
-      title: "Machine Learning Approaches for Pavement Distress Classification",
-      journal: "Journal of Infrastructure Engineering",
-      year: "2023",
-      type: "Research Paper",
-      status: "under review",
-      link: "",
-    },
-    {
-      title: "IoT-Based Monitoring Systems for Bridge Health Assessment",
-      journal: "Smart Infrastructure Conference",
-      year: "2023",
-      type: "Conference Paper",
-      status: "Presented",
-      link: "",
-    },
-  ];
+const publications = [
+  {
+    title: 'Development of a Simplified Methodology for British DoE Concrete Mix Design Procedure Using Python',
+    journal: 'Nile Journal of Engineering and Applied Science',
+    year: '2025',
+    type: 'Research Paper',
+    status: 'Published',
+    link: 'https://doi.org/10.5455/njeas.238594',
+  },
+  {
+    title: 'Pavement Distress Detection Using Deep Learning',
+    journal: 'Under Review',
+    year: '2026',
+    type: 'Research Paper',
+    status: 'Under Review',
+    link: '',
+  },
+];
+
+const interests = [
+  { icon: Microscope, label: 'AI in Civil Engineering', sub: 'ML and deep learning for infrastructure assessment' },
+  { icon: Zap, label: 'Carbon Accounting', sub: 'Embodied carbon quantification and net-zero construction' },
+  { icon: Building, label: 'Sustainable Design', sub: 'LCA-driven material selection and BoQ optimisation' },
+  { icon: BookOpen, label: 'Computer Vision', sub: 'CNN-based defect detection for road and structural assets' },
+];
+
+const statusDot: Record<string, string> = {
+  Published: 'bg-green-400',
+  Ongoing: 'bg-[#2dd4bf]',
+  Completed: 'bg-[#2dd4bf]',
+  'In Progress': 'bg-amber-400',
+  'Under Review': 'bg-amber-400',
+  Presented: 'bg-[#2dd4bf]',
+};
+
+function ResearchRow({ area, index }: { area: typeof researchAreas[0]; index: number }) {
+  const [open, setOpen] = useState(false);
 
   return (
-    <section id="research" className="py-20 bg-black">
-      <div className="container mx-auto px-6">
-        <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">
-              Research & Innovation
-            </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-teal-400 to-blue-500 mx-auto mb-6"></div>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Advancing the frontiers of engineering through cutting-edge
-              research and innovative solutions
-            </p>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.5, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
+      className="border-b border-white/5 last:border-0"
+    >
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-start md:items-center gap-6 py-5 text-left group"
+        data-cursor="button"
+      >
+        <span className="text-2xl font-extrabold font-mono text-[#888] group-hover:text-[#2dd4bf]/60 transition-colors shrink-0 w-10">
+          {area.num}
+        </span>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${statusDot[area.status] ?? 'bg-[#555]'}`} />
+            <span className="text-xs font-mono text-[#b8b8b8]">{area.status}</span>
           </div>
+          <h3 className="text-[#f0f0f0] font-semibold group-hover:text-[#2dd4bf] transition-colors duration-200">
+            {area.title}
+          </h3>
+        </div>
+        <motion.div
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+          className="text-[#888] shrink-0"
+        >
+          <ChevronDown size={16} />
+        </motion.div>
+      </button>
 
-          {/* Research Areas */}
-          <div className="grid md:grid-cols-2 gap-8 mb-16">
-            {researchAreas.map((area, index) => {
-              const IconComponent = area.icon;
-              return (
-                <div
-                  key={index}
-                  className="bg-gray-900 p-6 rounded-xl border border-gray-700 hover:border-teal-400 transition-all duration-300 transform hover:scale-105"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center space-x-3">
-                      <div
-                        className={`p-3 rounded-lg bg-gradient-to-r ${area.color}`}
-                      >
-                        <IconComponent className="text-white" size={24} />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-white">
-                          {area.title}
-                        </h3>
-                        <div className="flex items-center space-x-2 mt-1">
-                          <span
-                            className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                              area.status === "Published"
-                                ? "bg-green-500/20 text-green-400"
-                                : area.status === "Ongoing"
-                                ? "bg-blue-500/20 text-blue-400"
-                                : "bg-amber-500/20 text-amber-400"
-                            }`}
-                          >
-                            {area.status}
-                          </span>
-                          <span className="text-gray-400 text-sm">
-                            {area.publications} publication
-                            {area.publications !== 1 ? "s" : ""}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="text-gray-300 mb-4 leading-relaxed">
-                    {area.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-2">
-                    {area.keywords.map((keyword, keyIndex) => (
-                      <span
-                        key={keyIndex}
-                        className="px-3 py-1 bg-gray-700/80 text-teal-300 text-sm rounded-full border border-teal-400/40"
-                      >
-                        {keyword}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Publications Section */}
-          <div className="bg-gray-900 p-8 rounded-xl border border-gray-700">
-            <div className="flex items-center space-x-3 mb-6">
-              <FileText className="text-teal-400" size={28} />
-              <h3 className="text-2xl font-bold text-white">
-                Recent Publications
-              </h3>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="body"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="pb-5 ml-16">
+              <p className="text-[#c0c0c0] text-sm leading-relaxed mb-4">{area.description}</p>
+              <div className="flex flex-wrap gap-2">
+                {area.keywords.map((k) => (
+                  <span key={k} className="text-[11px] font-mono px-2.5 py-1 border border-white/15 rounded-full text-[#a0a0a0]">{k}</span>
+                ))}
+              </div>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
 
-            <div className="space-y-6">
-              {publications.map((pub, index) => (
-                <div
-                  key={index}
-                  className="bg-gray-800 p-6 rounded-lg border border-gray-600 hover:border-teal-400 transition-colors duration-300"
-                >
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                    <div className="flex-1">
-                      <h4 className="text-lg font-semibold text-white mb-2">
-                        {pub.title}
-                      </h4>
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400">
-                        <span className="flex items-center space-x-1">
-                          <BookOpen size={14} />
-                          <span>{pub.journal}</span>
-                        </span>
-                        <span>{pub.year}</span>
-                        <span className="px-2 py-1 bg-gray-700 text-teal-400 rounded-full">
-                          {pub.type}
-                        </span>
+export default function Research() {
+  return (
+    <section id="research" className="py-32 bg-[#0f0f0f]">
+      <div className="max-w-[1400px] mx-auto px-8">
+
+        {/* Section label */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="mb-16"
+        >
+          <p className="text-xs font-mono uppercase tracking-[0.15em] text-[#2dd4bf] mb-3">Academic</p>
+          <h2 className="text-4xl md:text-5xl font-extrabold tracking-[-0.03em] text-[#f0f0f0]">
+            Research & Innovation
+          </h2>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-16">
+
+          {/* Research accordion */}
+          <div>
+            {researchAreas.map((area, i) => (
+              <ResearchRow key={area.num} area={area} index={i} />
+            ))}
+          </div>
+
+          {/* Publications + interests */}
+          <div className="space-y-10">
+
+            {/* Publications */}
+            <div>
+              <p className="text-xs font-mono uppercase tracking-[0.1em] text-[#2dd4bf]/70 mb-5">Publications</p>
+              <div className="space-y-0">
+                {publications.map((pub, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: i * 0.08 }}
+                    className="py-4 border-b border-white/5 last:border-0"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-[#f0f0f0] text-sm font-medium leading-snug mb-2">{pub.title}</p>
+                        <p className="text-xs text-[#a0a0a0] font-mono">{pub.journal} · {pub.year}</p>
                       </div>
-                    </div>
-                    <div className="mt-4 md:mt-0 flex items-center space-x-3">
-                      <span
-                        className={`px-3 py-1 text-xs font-semibold rounded-full ${
-                          pub.status === "Published"
-                            ? "bg-green-500/20 text-green-400"
-                            : pub.status === "Presented"
-                            ? "bg-blue-500/20 text-blue-400"
-                            : "bg-amber-500/20 text-amber-400"
-                        }`}
-                      >
-                        {pub.status}
-                      </span>
-                      {pub.link ? (
+                      {pub.link && (
                         <a
                           href={pub.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          aria-label="Open publication"
-                          className="text-teal-400 hover:text-teal-300 transition-colors duration-200"
+                          data-cursor="link"
+                          className="text-[#888] hover:text-[#2dd4bf] transition-colors shrink-0 mt-0.5"
                         >
-                          <ExternalLink size={16} />
+                          <ExternalLink size={14} />
                         </a>
-                      ) : (
-                        <span className="text-gray-500 text-xs italic">
-                          Coming soon
-                        </span>
                       )}
                     </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Research Interests */}
-          <div className="mt-16 bg-gradient-to-r from-teal-500/10 to-blue-500/10 p-8 rounded-xl border border-teal-400/30">
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold text-white mb-4">
-                Current Research Interests
-              </h3>
-              <p className="text-gray-400">
-                Areas of active investigation and future research directions
-              </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className={`w-1.5 h-1.5 rounded-full ${statusDot[pub.status] ?? 'bg-[#555]'}`} />
+                      <span className="text-xs text-[#b8b8b8]">{pub.status}</span>
+                      <span className="text-xs text-[#a0a0a0] border border-white/15 rounded-full px-2 py-0.5 font-mono">{pub.type}</span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Microscope className="text-white" size={24} />
-                </div>
-                <h4 className="text-white font-semibold mb-2">
-                  Climate Engineering
-                </h4>
-                <p className="text-gray-400 text-sm">
-                  Adaptation strategies for climate change impacts
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Zap className="text-white" size={24} />
-                </div>
-                <h4 className="text-white font-semibold mb-2">
-                  Smart Infrastructure
-                </h4>
-                <p className="text-gray-400 text-sm">
-                  IoT and AI-enabled infrastructure systems
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Building className="text-white" size={24} />
-                </div>
-                <h4 className="text-white font-semibold mb-2">
-                  Sustainable Design
-                </h4>
-                <p className="text-gray-400 text-sm">
-                  Eco-friendly construction methodologies
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <BookOpen className="text-white" size={24} />
-                </div>
-                <h4 className="text-white font-semibold mb-2">Digital Twins</h4>
-                <p className="text-gray-400 text-sm">
-                  Virtual modeling of physical infrastructure
-                </p>
+            {/* Research interests */}
+            <div>
+              <p className="text-xs font-mono uppercase tracking-[0.1em] text-[#2dd4bf]/70 mb-5">Research Interests</p>
+              <div className="grid grid-cols-2 gap-4">
+                {interests.map(({ icon: Icon, label, sub }, i) => (
+                  <motion.div
+                    key={label}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: i * 0.08 }}
+                    className="bg-[#141414] border border-white/5 rounded-xl p-4"
+                  >
+                    <Icon size={16} className="text-[#2dd4bf] mb-3" />
+                    <p className="text-[#f0f0f0] text-sm font-semibold mb-1">{label}</p>
+                    <p className="text-xs text-[#a0a0a0] leading-snug">{sub}</p>
+                  </motion.div>
+                ))}
               </div>
             </div>
+
           </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default Research;
+}

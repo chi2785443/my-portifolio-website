@@ -1,12 +1,73 @@
+@import "@fontsource/plus-jakarta-sans/300.css";
+@import "@fontsource/plus-jakarta-sans/400.css";
+@import "@fontsource/plus-jakarta-sans/500.css";
+@import "@fontsource/plus-jakarta-sans/600.css";
+@import "@fontsource/plus-jakarta-sans/700.css";
+@import "@fontsource/plus-jakarta-sans/800.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --accent: #2dd4bf;
+  --accent-dim: #0d9488;
+  --accent-glow: rgba(45, 212, 191, 0.12);
+  --bg-base: #080808;
+  --bg-raised: #0f0f0f;
+  --bg-card: #141414;
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-accent: rgba(45, 212, 191, 0.25);
+  --text-primary: #f0f0f0;
+  --text-secondary: #b8b8b8;
+  --text-muted: #888888;
+}
+
 html {
-  scroll-behavior: smooth;
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
 }
 
 body {
-  background-color: #000000;
-  color: #f3f4f6;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+}
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* Hide native cursor on pointer devices */
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
+
+/* Teal selection highlight */
+::selection {
+  background: rgba(45, 212, 191, 0.2);
+  color: #f0f0f0;
+}
+
+/* Reduced motion — collapse all animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

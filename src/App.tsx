@@ -1,4 +1,5 @@
-import React from 'react';
+import { useEffect } from 'react';
+import Lenis from 'lenis';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -8,10 +9,29 @@ import Skills from './components/Skills';
 import Research from './components/Research';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import CustomCursor from './components/ui/CustomCursor';
+import ScrollProgressBar from './components/ui/ScrollProgressBar';
 
 function App() {
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    return () => lenis.destroy();
+  }, []);
+
   return (
-    <div className="bg-gray-900 text-gray-100 min-h-screen">
+    <div className="bg-[#080808] text-[#f0f0f0] min-h-screen">
+      <CustomCursor />
+      <ScrollProgressBar />
       <Header />
       <Hero />
       <About />

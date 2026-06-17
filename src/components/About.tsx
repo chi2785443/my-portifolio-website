@@ -1,145 +1,135 @@
-import React from "react";
-import { User, GraduationCap, Award, MapPin } from "lucide-react";
+import { motion } from 'framer-motion';
+import { GraduationCap, MapPin, Award } from 'lucide-react';
 
-const About = () => {
+const coreValues = [
+  { num: '01', name: 'Innovation', sub: 'Forward Thinking' },
+  { num: '02', name: 'Excellence', sub: 'Quality Driven' },
+  { num: '03', name: 'Leadership', sub: 'Team Builder' },
+  { num: '04', name: 'Impact', sub: 'Solution Focused' },
+];
+
+const achievements = [
+  'Published Researcher, Nile Journal of Engineering and Applied Science (2025)',
+  'PTDF National Scholar, Federal Government of Nigeria (2021–2024)',
+  'Top 100 Africa Future Leaders, Class of 2025',
+  'President, NICESA FUT Minna, led 900+ civil engineering students',
+];
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+};
+
+export default function About() {
   return (
-    <section id="about" className="py-20 bg-gray-950 text-gray-200">
-      <div className="container mx-auto px-6">
-        <div className="max-w-6xl mx-auto">
-          {/* Section Title */}
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-[#14b8a6] via-[#3b82f6] to-[#e11d48] bg-clip-text text-transparent">
-              About Me
-            </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-[#14b8a6] to-[#3b82f6] mx-auto rounded-full"></div>
-          </div>
+    <section id="about" className="py-32 bg-[#080808]">
+      <div className="max-w-[1400px] mx-auto px-8">
 
-          <div className="grid md:grid-cols-2 gap-12 items-start">
-            {/* Bio Section */}
-            <div className="space-y-6">
-              <div className="flex items-center space-x-3">
-                <User className="text-[#14b8a6]" size={24} />
-                <h3 className="text-2xl font-semibold">My Journey</h3>
+        {/* Section label */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="mb-16"
+        >
+          <p className="text-xs font-mono uppercase tracking-[0.15em] text-[#2dd4bf] mb-3">Background</p>
+          <h2 className="text-4xl md:text-5xl font-extrabold tracking-[-0.03em] text-[#f0f0f0]">
+            Engineering meets code.
+          </h2>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+
+          {/* Left, bio */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+            className="space-y-6"
+          >
+            {[
+              `I'm a first-class Civil Engineering graduate (CGPA 4.79/5.0, Top 2 in department) who crossed into software engineering and AI/ML research, spending 5+ years building production systems and applied research tools concurrently with structural design and site supervision work.`,
+              `My published research converted the British DoE concrete mix design procedure into a validated Python algorithm, now in the Nile Journal of Engineering and Applied Science (2025). A second paper on CNN-based pavement distress detection across 30,000 labelled images is under review. On the software side, I've shipped full-stack platforms across carbon accounting (Django, Celery, EPA WARM v16), crypto tokenomics (NestJS), and mobile app stores (React Native, Flutter).`,
+              `I'm currently a Civil Engineering Graduate Intern at Urban Shelter Limited while simultaneously developing BuildCore, a construction management platform integrating Bills of Quantities with embodied carbon accounting and AI driven material substitution toward net-zero targets.`,
+            ].map((para, i) => (
+              <motion.p key={i} variants={itemVariants} className="text-[#c0c0c0] leading-relaxed">
+                {para}
+              </motion.p>
+            ))}
+
+            <motion.div variants={itemVariants} className="flex flex-wrap gap-3 pt-2">
+              <span className="flex items-center gap-2 text-sm text-[#888]">
+                <MapPin size={13} className="text-[#2dd4bf]" /> Abuja, Nigeria
+              </span>
+              <span className="flex items-center gap-2 text-sm text-[#888]">
+                <Award size={13} className="text-[#2dd4bf]" /> 5+ Years Experience
+              </span>
+            </motion.div>
+          </motion.div>
+
+          {/* Right, education, achievements, values */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+            variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+            className="space-y-10"
+          >
+            {/* Education card */}
+            <motion.div
+              variants={{ hidden: { opacity: 0, x: 30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } } }}
+              className="bg-[#141414] border border-white/7 rounded-xl p-6"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <GraduationCap size={18} className="text-[#2dd4bf]" />
+                <span className="text-xs font-mono uppercase tracking-[0.1em] text-[#888]">Education</span>
               </div>
+              <h4 className="text-[#2dd4bf] font-semibold mb-1">B.Eng Civil Engineering</h4>
+              <p className="text-[#f0f0f0] text-sm">Federal University of Technology, Minna</p>
+              <p className="text-[#b8b8b8] text-xs mt-1">CGPA 4.79/5.0 · First Class Honours · Top 2 in department</p>
+              <p className="text-[#888] text-sm mt-1 font-mono">Sept 2018 – Jan 2025</p>
+            </motion.div>
 
-              <p className="text-gray-300 text-lg leading-relaxed">
-                I’m a first-class Civil Engineering graduate with a strong
-                foundation in structural design, construction, and environmental
-                engineering, now merging that expertise with a deep passion for
-                software development and AI/ML research. With over 5 years of
-                hands-on experience, I specialize in building solutions that
-                bridge the gap between traditional engineering and modern
-                technology.
-              </p>
-
-              <p className="text-gray-300 text-lg leading-relaxed">
-                My work spans intelligent infrastructure tools and next-gen
-                educational platforms. I built an ML-powered concrete mix design
-                app to automate civil engineering processes, and I’m currently
-                developing BuildCore – a comprehensive construction management
-                software using Django and BIM-based tracking. I also created
-                FutMiTePadi and Padimi – mobile apps focused on learning and
-                self-growth – and I'm building EduFlow, a SaaS platform for
-                schools powered by NestJS and PostgreSQL.
-              </p>
-
-              <p className="text-gray-300 text-lg leading-relaxed">
-                I’m passionate about solving real-world problems through AI,
-                automation, and scalable software. I thrive in projects that
-                combine analytical thinking, engineering insight, and full-stack
-                development. I’ve also led teams and mentored young engineers,
-                fostering a collaborative, impact-driven mindset.
-              </p>
-
-              <div className="flex flex-wrap gap-4 mt-6">
-                <div className="flex items-center space-x-2 bg-[#111] px-4 py-2 rounded-lg border border-gray-700">
-                  <MapPin className="text-[#14b8a6]" size={16} />
-                  <span>Abuja, Nigeria</span>
-                </div>
-                <div className="flex items-center space-x-2 bg-[#111] px-4 py-2 rounded-lg border border-gray-700">
-                  <Award className="text-[#14b8a6]" size={16} />
-                  <span>5+ Years Experience</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Education & Achievements */}
-            <div className="space-y-8">
-              <div className="bg-[#111] p-6 rounded-xl border border-gray-700 hover:border-[#14b8a6] shadow transition-all duration-300">
-                <div className="flex items-center space-x-3 mb-4">
-                  <GraduationCap className="text-[#14b8a6]" size={24} />
-                  <h3 className="text-xl font-semibold">Education</h3>
-                </div>
-                <div>
-                  <h4 className="text-lg font-medium text-[#14b8a6]">
-                    B.Eng Civil Engineering
-                  </h4>
-                  <p className="text-gray-300">
-                    Federal University of Technology, Minna
-                  </p>
-                  <p className="text-gray-500 text-sm">2018 – 2024</p>
-                </div>
-              </div>
-
-              <div className="bg-[#111] p-6 rounded-xl border border-gray-700 hover:border-[#3b82f6] shadow transition-all duration-300">
-                <div className="flex items-center space-x-3 mb-4">
-                  <Award className="text-[#3b82f6]" size={24} />
-                  <h3 className="text-xl font-semibold">Key Achievements</h3>
-                </div>
-                <ul className="space-y-2 pl-2">
-                  {[
-                    "President, NICESA FUTMinna",
-                    "BuildCore solution",
-                    "AI & Software Development Specialist",
-                    "Research in concrete mixed design",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start space-x-3">
-                      <div className="w-2 h-2 bg-[#3b82f6] rounded-full mt-2"></div>
-                      <p className="text-gray-300">{item}</p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="bg-gradient-to-r from-[#14b8a6]/10 to-[#3b82f6]/10 p-6 rounded-xl border border-[#14b8a6]/30">
-                <h3 className="text-lg font-semibold mb-4">Core Values</h3>
-                <div className="grid grid-cols-2 gap-4 text-center">
-                  <div>
-                    <div className="text-2xl font-bold text-[#14b8a6]">
-                      Innovation
-                    </div>
-                    <div className="text-sm text-gray-400">
-                      Forward Thinking
-                    </div>
+            {/* Achievements */}
+            <motion.div variants={itemVariants}>
+              <p className="text-xs font-mono uppercase tracking-[0.1em] text-[#888] mb-4">Key Achievements</p>
+              <div className="space-y-0">
+                {achievements.map((item, i) => (
+                  <div key={i} className="flex items-start gap-3 py-3 border-b border-white/5 last:border-0">
+                    <span className="mt-1.5 w-1 h-1 rounded-full bg-[#2dd4bf] shrink-0" />
+                    <p className="text-[#c0c0c0] text-sm">{item}</p>
                   </div>
-                  <div>
-                    <div className="text-2xl font-bold text-[#3b82f6]">
-                      Excellence
-                    </div>
-                    <div className="text-sm text-gray-400">Quality Driven</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-[#a855f7]">
-                      Leadership
-                    </div>
-                    <div className="text-sm text-gray-400">Team Builder</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-[#f59e0b]">
-                      Impact
-                    </div>
-                    <div className="text-sm text-gray-400">
-                      Solution Focused
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
-            </div>
-          </div>
+            </motion.div>
+
+            {/* Core Values */}
+            <motion.div variants={itemVariants}>
+              <p className="text-xs font-mono uppercase tracking-[0.1em] text-[#888] mb-5">Core Values</p>
+              <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                {coreValues.map(({ num, name, sub }, i) => (
+                  <motion.div
+                    key={num}
+                    initial={{ clipPath: 'inset(0 100% 0 0)' }}
+                    whileInView={{ clipPath: 'inset(0 0% 0 0)' }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-xs font-mono text-[#2dd4bf]/50">{num}</span>
+                      <span className="font-bold text-[#f0f0f0]">{name}</span>
+                    </div>
+                    <p className="text-xs text-[#888] mt-0.5">{sub}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+
         </div>
       </div>
     </section>
   );
-};
-
-export default About;
+}

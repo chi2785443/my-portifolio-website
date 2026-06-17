@@ -1,245 +1,132 @@
-import React from "react";
-import {
-  Code,
-  Wrench,
-  Brain,
-  Database,
-  Palette,
-  Globe,
-  MessageCircle,
-  Settings,
-  Smartphone,
-} from "lucide-react";
+import { motion } from 'framer-motion';
+import AnimatedCounter from './ui/AnimatedCounter';
 
-const Skills = () => {
-  const skillCategories = [
-    {
-      title: "Programming Languages",
-      icon: Code,
-      color: "from-indigo-500 to-blue-600",
-      skills: [
-        { name: "Python", level: 95 },
-        { name: "JavaScript", level: 95 },
-        { name: "TypeScript", level: 90 },
-        { name: "Dart", level: 85 },
-        { name: "Go", level: 75 },
-        { name: "HTML5/CSS3", level: 95 },
-        { name: "SQL", level: 85 },
-      ],
-    },
-    {
-      title: "Frontend Development",
-      icon: Globe,
-      color: "from-blue-500 to-purple-600",
-      skills: [
-        { name: "React/Next.js", level: 95 },
-        { name: "Tailwind CSS", level: 90 },
-        { name: "JavaScript", level: 95 },
-        { name: "Bootstrap", level: 80 },
-        { name: "Sass", level: 80 },
-        { name: "HTML/CSS", level: 95 },
-      ],
-    },
-    {
-      title: "Backend Development",
-      icon: Database,
-      color: "from-green-500 to-teal-600",
-      skills: [
-        { name: "Node.js", level: 90 },
-        { name: "Express.js", level: 85 },
-        { name: "NestJS", level: 85 },
-        { name: "Django", level: 80 },
-        { name: "FastAPI", level: 85 },
-        { name: "Firebase", level: 80 },
-      ],
-    },
-    {
-      title: "Databases",
-      icon: Database,
-      color: "from-yellow-500 to-orange-600",
-      skills: [
-        { name: "PostgreSQL", level: 85 },
-        { name: "MongoDB", level: 80 },
-        { name: "MySQL", level: 75 },
-      ],
-    },
-    {
-      title: "Mobile App Development",
-      icon: Smartphone,
-      color: "from-pink-500 to-rose-600",
-      skills: [
-        { name: "React Native", level: 90 },
-        { name: "Flutter", level: 85 },
-        { name: "Dart", level: 85 },
-        { name: "Expo", level: 80 },
-      ],
-    },
-    {
-      title: "AI & Machine Learning",
-      icon: Brain,
-      color: "from-purple-500 to-pink-600",
-      skills: [
-        { name: "TensorFlow", level: 85 },
-        { name: "Scikit-learn", level: 85 },
-        { name: "Pandas", level: 90 },
-        { name: "NumPy", level: 90 },
-        { name: "OpenCV", level: 80 },
-        { name: "MATLAB", level: 75 },
-        { name: "Jupyter", level: 85 },
-      ],
-    },
-    {
-      title: "DevOps & Tools",
-      icon: Settings,
-      color: "from-teal-500 to-blue-600",
-      skills: [
-        { name: "Git/GitHub", level: 95 },
-        { name: "Docker", level: 80 },
-        { name: "Redis", level: 75 },
-        { name: "Linux", level: 85 },
-        { name: "CI/CD", level: 75 },
-        { name: "Expo", level: 80 },
-      ],
-    },
-    {
-      title: "Engineering Tools",
-      icon: Wrench,
-      color: "from-amber-500 to-orange-600",
-      skills: [
-        { name: "AutoCAD", level: 95 },
-        { name: "Civil 3D", level: 90 },
-        { name: "ProtaStructure", level: 85 },
-        { name: "Robot Structural", level: 80 },
-        { name: "STAAD Pro", level: 70 },
-      ],
-    },
-    {
-      title: "Design & UI/UX",
-      icon: Palette,
-      color: "from-pink-500 to-red-600",
-      skills: [
-        { name: "Figma", level: 85 },
-        { name: "UI/UX Design", level: 80 },
-        { name: "Responsive Design", level: 90 },
-        { name: "Prototyping", level: 75 },
-        { name: "Design Systems", level: 80 },
-        { name: "User Research", level: 70 },
-      ],
-    },
-    {
-      title: "Soft Skills",
-      icon: MessageCircle,
-      color: "from-gray-500 to-gray-700",
-      skills: [
-        { name: "Teamwork", level: 95 },
-        { name: "Effective Communication", level: 90 },
-        { name: "Creativity", level: 90 },
-        { name: "Research Skills", level: 85 },
-        { name: "Problem Solving", level: 90 },
-        { name: "Leadership", level: 85 },
-        { name: "Analytical Thinking", level: 90 },
-        { name: "Self-Improvement", level: 90 },
-      ],
-    },
-  ];
+const metrics = [
+  { target: 5, suffix: '+', label: 'Years Experience' },
+  { target: 30, suffix: '+', label: 'Projects Completed' },
+  { target: 2, suffix: '', label: 'Published / Under-Review Papers' },
+  { target: 180, suffix: '+', label: 'Students Taught' },
+];
 
+const skillDomains = [
+  {
+    domain: 'Languages',
+    tags: ['Python', 'JavaScript', 'TypeScript', 'Dart', 'Go', 'SQL'],
+  },
+  {
+    domain: 'Frontend',
+    tags: ['React', 'Next.js', 'Tailwind CSS', 'ShadCN UI', 'Bootstrap', 'Sass'],
+  },
+  {
+    domain: 'Backend',
+    tags: ['Django', 'Django REST Framework', 'Node.js', 'Express', 'NestJS', 'FastAPI', 'Celery'],
+  },
+  {
+    domain: 'Mobile',
+    tags: ['React Native', 'Flutter', 'Expo', 'TensorFlow Lite'],
+  },
+  {
+    domain: 'AI / ML',
+    tags: ['TensorFlow', 'Scikit-Learn', 'Pandas', 'NumPy', 'OpenCV', 'MATLAB', 'Random Forest', 'CNN', 'Joblib'],
+  },
+  {
+    domain: 'Databases',
+    tags: ['PostgreSQL', 'MongoDB', 'MySQL', 'Firebase', 'Supabase', 'Neon'],
+  },
+  {
+    domain: 'DevOps & Tools',
+    tags: ['Git/GitHub', 'Docker', 'AWS', 'Azure', 'Ubuntu Server', 'CI/CD'],
+  },
+  {
+    domain: 'Engineering',
+    tags: ['AutoCAD', 'Civil 3D', 'Revit (BIM)', 'Prota-Structure', 'Robot Structural', 'Manual Calculations', 'GIS'],
+  },
+  {
+    domain: 'Sustainability',
+    tags: ['EPA WARM v16', 'DEFRA Emission Factors', 'IPCC GWP', 'LCA', 'Scope 1/2/3', 'Embodied Carbon', 'GHG Protocol'],
+  },
+];
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+};
+
+export default function Skills() {
   return (
-    <section id="skills" className="py-20 bg-gray-950">
-      <div className="container mx-auto px-6">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">
-              Skills & Expertise
-            </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-teal-400 to-blue-500 mx-auto mb-4 rounded-full"></div>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              A comprehensive toolkit spanning traditional engineering and
-              modern technology
-            </p>
-          </div>
+    <section id="skills" className="py-32 bg-[#080808]">
+      <div className="max-w-[1400px] mx-auto px-8">
 
-          {/* Skill Cards */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {skillCategories.map((category, index) => {
-              const Icon = category.icon;
-              return (
-                <div
-                  key={index}
-                  className="bg-[#111] p-6 rounded-2xl border border-gray-800 hover:border-teal-500/50 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-[1.02]"
-                >
-                  {/* Header */}
-                  <div className="flex items-center space-x-3 mb-6">
-                    <div
-                      className={`p-3 rounded-lg bg-gradient-to-r ${category.color}`}
-                    >
-                      <Icon size={24} className="text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold text-white">
-                      {category.title}
-                    </h3>
-                  </div>
+        {/* Section label */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="mb-16"
+        >
+          <p className="text-xs font-mono uppercase tracking-[0.15em] text-[#2dd4bf] mb-3">Capabilities</p>
+          <h2 className="text-4xl md:text-5xl font-extrabold tracking-[-0.03em] text-[#f0f0f0]">
+            Skills & Expertise
+          </h2>
+        </motion.div>
 
-                  {/* Skills */}
-                  <div className="space-y-4">
-                    {category.skills.map((skill, i) => (
-                      <div key={i}>
-                        <div className="flex justify-between text-sm mb-1">
-                          <span className="text-gray-300 font-medium">
-                            {skill.name}
-                          </span>
-                          <span className="text-teal-400 font-semibold">
-                            {skill.level}%
-                          </span>
-                        </div>
-                        <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
-                          <div
-                            className={`h-full rounded-full bg-gradient-to-r ${category.color}`}
-                            style={{ width: `${skill.level}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+        {/* Metric tiles */}
+        <motion.div
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={{ visible: { transition: { staggerChildren: 0.12 } } }}
+        >
+          {metrics.map(({ target, suffix, label }) => (
+            <motion.div
+              key={label}
+              variants={itemVariants}
+              className="bg-[#141414] border border-white/7 rounded-xl p-6"
+            >
+              <div className="text-5xl font-extrabold text-[#2dd4bf] tracking-[-0.03em] mb-2">
+                <AnimatedCounter target={target} suffix={suffix} />
+              </div>
+              <p className="text-sm text-[#b8b8b8]">{label}</p>
+            </motion.div>
+          ))}
+        </motion.div>
 
-          {/* Career Metrics */}
-          <div className="mt-20 bg-gradient-to-r from-teal-500/10 to-blue-500/10 border border-teal-500/30 p-10 rounded-2xl">
-            <div className="text-center mb-10">
-              <h3 className="text-2xl font-bold text-white mb-2">
-                Professional Highlights
-              </h3>
-              <p className="text-gray-400">
-                Key metrics and achievements across my career
-              </p>
-            </div>
+        {/* Skill domain rows */}
+        <motion.div
+          className="space-y-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
+        >
+          {skillDomains.map(({ domain, tags }) => (
+            <motion.div
+              key={domain}
+              variants={itemVariants}
+              className="flex flex-col sm:flex-row sm:items-start gap-4 pb-8 border-b border-white/5 last:border-0"
+            >
+              <div className="w-36 shrink-0 pt-1">
+                <span className="text-xs font-mono uppercase tracking-[0.1em] text-[#2dd4bf]/70">{domain}</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <motion.span
+                    key={tag}
+                    whileHover={{ borderColor: 'rgba(45,212,191,0.6)', color: '#f0f0f0' }}
+                    className="text-[13px] font-mono px-3 py-1.5 border border-white/15 rounded-full text-[#c8c8c8] transition-colors duration-200"
+                    data-cursor="link"
+                  >
+                    {tag}
+                  </motion.span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              <div>
-                <div className="text-3xl font-bold text-teal-400">5+</div>
-                <p className="text-gray-400 mt-1">Years Experience</p>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-blue-400">20+</div>
-                <p className="text-gray-400 mt-1">Projects Completed</p>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-purple-400">15+</div>
-                <p className="text-gray-400 mt-1">Technologies Mastered</p>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-amber-400">100+</div>
-                <p className="text-gray-400 mt-1">Students Mentored</p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
-};
-
-export default Skills;
+}
