@@ -5,7 +5,7 @@ import MagneticButton from './ui/MagneticButton';
 
 const containerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } },
 };
 
 const itemVariants = {
@@ -23,127 +23,128 @@ const scrollTo = (href: string) =>
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
-  const textY = useTransform(scrollYProgress, [0, 1], [0, -60]);
-  const photoY = useTransform(scrollYProgress, [0, 1], [0, 30]);
+  const ghostX = useTransform(scrollYProgress, [0, 1], ['0%', '-12%']);
+  const ghostY = useTransform(scrollYProgress, [0, 1], [0, 80]);
+  const photoY = useTransform(scrollYProgress, [0, 1], [0, 50]);
+  const textY = useTransform(scrollYProgress, [0, 1], [0, -40]);
 
   return (
     <section
       id="hero"
       ref={sectionRef}
-      className="min-h-[100dvh] flex items-center relative overflow-hidden bg-[#080808]"
+      className="relative flex flex-col min-h-[100dvh] overflow-hidden bg-[#f1ece2] text-[#141414]"
     >
-      {/* Static accent glow */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#2dd4bf]/5 rounded-full blur-[120px] pointer-events-none" />
+      {/* Soft warm glow */}
+      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full bg-[#fff8e8] blur-[120px] pointer-events-none" />
 
-      <div className="max-w-[1400px] mx-auto px-8 w-full pt-24 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-[55fr_45fr] gap-12 lg:gap-0 items-center">
+      {/* Ghost name sits behind the portrait */}
+      <motion.div
+        aria-hidden
+        style={{ x: ghostX, y: ghostY }}
+        className="absolute inset-x-0 top-[58%] lg:top-[10%] z-0 select-none pointer-events-none"
+      >
+        <p className="whitespace-nowrap text-center font-extrabold leading-none tracking-[-0.05em] text-[#141414]/[0.07] text-[clamp(4rem,19vw,24rem)]">
+          CHINEDU
+        </p>
+      </motion.div>
 
-          {/* Left, text */}
-          <motion.div
-            style={{ y: textY }}
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="flex flex-col"
+      {/* Foreground copy */}
+      <motion.div
+        style={{ y: textY }}
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="relative z-20 px-6 pt-28 lg:pt-0 lg:absolute lg:inset-x-0 lg:bottom-0 lg:px-12 lg:pb-14 max-w-[1500px] mx-auto w-full lg:flex lg:items-end lg:justify-between"
+      >
+        <div className="max-w-xl">
+          <motion.p
+            variants={itemVariants}
+            className="text-xs font-mono tracking-[0.2em] text-[#141414]/55 mb-4"
           >
-            {/* Teal accent line */}
-            <motion.div
-              variants={itemVariants}
-              className="w-10 h-px bg-[#2dd4bf] mb-8"
-            />
+            CHINEDU AGUWA
+          </motion.p>
 
-            {/* Roles */}
-            <motion.p
-              variants={itemVariants}
-              className="text-sm font-mono text-[#2dd4bf] tracking-[0.08em] mb-5"
-            >
-              Civil Engineering&nbsp;&nbsp;/&nbsp;&nbsp;Software Engineering&nbsp;&nbsp;/&nbsp;&nbsp;AI & ML Research
-            </motion.p>
-
-            {/* Name */}
-            <motion.h1
-              variants={itemVariants}
-              className="text-[clamp(3rem,8vw,6rem)] font-extrabold leading-[1.0] tracking-[-0.03em] text-[#f0f0f0] mb-6"
-            >
-              Chinedu
-              <br />
-              Aguwa
-            </motion.h1>
-
-            {/* Description */}
-            <motion.p
-              variants={itemVariants}
-              className="text-base md:text-lg text-[#b8b8b8] leading-relaxed max-w-md mb-10"
-            >
-              Machine learning researcher and software engineer working at the crossroads of civil
-              infrastructure, environmental sustainability, and intelligent systems. I publish
-              peer-reviewed work on AI driven engineering challenges, and ship production software
-              that closes the gap between research and real-world impact.
-            </motion.p>
-
-            {/* CTAs */}
-            <motion.div variants={itemVariants} className="flex flex-wrap gap-4 mb-12">
-              <MagneticButton
-                className="px-7 py-3.5 bg-[#2dd4bf] text-black text-sm font-bold rounded-lg flex items-center gap-2 hover:bg-[#2dd4bf]/90 transition-colors"
-                onClick={() => scrollTo('#projects')}
-              >
-                View Work <ArrowRight size={16} />
-              </MagneticButton>
-
-              <MagneticButton
-                className="px-7 py-3.5 border border-white/15 text-[#f0f0f0]/70 text-sm font-semibold rounded-lg flex items-center gap-2 hover:border-white/30 hover:text-[#f0f0f0] transition-all"
-                href="/Chinedu_Aguwa_CV.pdf"
-                download
-              >
-                <Download size={15} /> Download Resume
-              </MagneticButton>
-            </motion.div>
-
-            {/* Social icons */}
-            <motion.div variants={itemVariants} className="flex items-center gap-5">
-              {[
-                { icon: Github, href: 'https://github.com/Chi2785443', label: 'GitHub' },
-                { icon: Linkedin, href: 'https://www.linkedin.com/in/chinedu-aguwa/', label: 'LinkedIn' },
-                { icon: Mail, href: 'mailto:chineduaguwa0@gmail.com', label: 'Email' },
-              ].map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target={href.startsWith('http') ? '_blank' : undefined}
-                  rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  aria-label={label}
-                  data-cursor="link"
-                  className="text-[#555] hover:text-[#2dd4bf] transition-colors duration-200"
-                >
-                  <Icon size={20} />
-                </a>
-              ))}
-            </motion.div>
-          </motion.div>
-
-          {/* Right, photo */}
-          <motion.div
-            style={{ y: photoY }}
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="flex justify-center lg:justify-end"
+          <motion.h1
+            variants={itemVariants}
+            className="text-[clamp(3rem,7.5vw,6.5rem)] font-extrabold leading-[0.95] tracking-[-0.04em] mb-5"
           >
-            <div className="relative w-72 h-72 md:w-96 md:h-96">
-              {/* Subtle glow ring */}
-              <div className="absolute inset-0 rounded-full border border-[#2dd4bf]/20" />
-              <div className="absolute inset-3 rounded-full overflow-hidden border border-[#2dd4bf]/30 shadow-[0_0_60px_rgba(45,212,191,0.08)]">
-                <img
-                  src="/profile.jpg"
-                  alt="Chinedu Aguwa"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          </motion.div>
+            Software
+            <br />
+            Engineer<span className="text-[#0d9488]">.</span>
+          </motion.h1>
 
+          <motion.p
+            variants={itemVariants}
+            className="text-sm md:text-base text-[#141414]/65 leading-relaxed max-w-sm"
+          >
+            Civil engineer turned ML researcher. I publish peer-reviewed work on AI for
+            infrastructure and sustainability, and ship the software behind it.
+          </motion.p>
         </div>
-      </div>
+
+        <motion.div
+          variants={itemVariants}
+          className="mt-8 lg:mt-0 flex flex-col gap-5 lg:items-end"
+        >
+          <div className="flex flex-wrap gap-3">
+            <MagneticButton
+              className="px-6 py-3.5 bg-[#141414] text-[#f1ece2] text-sm font-bold rounded-full flex items-center gap-2 hover:bg-black transition-colors"
+              onClick={() => scrollTo('#projects')}
+            >
+              Explore work <ArrowRight size={16} />
+            </MagneticButton>
+
+            <MagneticButton
+              className="px-6 py-3.5 border border-[#141414]/20 bg-white/40 text-[#141414] text-sm font-semibold rounded-full flex items-center gap-2 hover:bg-white/70 transition-colors"
+              href="/Chinedu_Aguwa_CV.pdf"
+              download
+            >
+              <Download size={15} /> Resume
+            </MagneticButton>
+          </div>
+
+          <div className="flex items-center gap-5">
+            {[
+              { icon: Github, href: 'https://github.com/Chi2785443', label: 'GitHub' },
+              { icon: Linkedin, href: 'https://www.linkedin.com/in/chinedu-aguwa/', label: 'LinkedIn' },
+              { icon: Mail, href: 'mailto:chineduaguwa0@gmail.com', label: 'Email' },
+            ].map(({ icon: Icon, href, label }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith('http') ? '_blank' : undefined}
+                rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                aria-label={label}
+                data-cursor="link"
+                className="text-[#141414]/45 hover:text-[#0d9488] transition-colors duration-200"
+              >
+                <Icon size={20} />
+              </a>
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* Portrait: multiply blend dissolves the photo's white backdrop into the cream */}
+      <motion.div
+        style={{ y: photoY }}
+        initial={{ opacity: 0, scale: 0.94 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 mt-auto flex justify-center lg:absolute lg:inset-x-0 lg:bottom-0 lg:mt-0 pointer-events-none"
+      >
+        <img
+          src="/profile.jpg"
+          alt="Chinedu Aguwa"
+          className="block w-[min(88vw,420px)] lg:w-auto lg:h-[min(78vh,820px)] aspect-square object-cover mix-blend-multiply"
+          style={{
+            WebkitMaskImage:
+              'radial-gradient(ellipse 54% 100% at 50% 100%, #000 45%, transparent 100%)',
+            maskImage:
+              'radial-gradient(ellipse 54% 100% at 50% 100%, #000 45%, transparent 100%)',
+          }}
+        />
+      </motion.div>
     </section>
   );
 }
