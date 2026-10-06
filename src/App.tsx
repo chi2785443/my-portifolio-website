@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import Lenis from 'lenis';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import IdCardSection from './components/IdCardSection';
 import About from './components/About';
 import Experience from './components/Experience';
 import Projects from './components/Projects';
@@ -35,6 +36,7 @@ function App() {
       <Header />
       <Hero />
       <About />
+      <IdCardSection />
       <Experience />
       <Projects />
       <Skills />

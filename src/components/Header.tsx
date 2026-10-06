@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 
 const navItems = [
@@ -15,24 +15,31 @@ const scrollTo = (href: string) => {
   document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
 };
 
-export default function Header() {
+export default function Header({ heroLight = true }: { heroLight?: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
   const { scrollY } = useScroll();
-  const bgOpacity = useTransform(scrollY, [0, 80], [0, 0.92]);
   const borderOpacity = useTransform(scrollY, [0, 80], [0, 0.08]);
+  // The hero is light; switch the header to dark text until it scrolls past
+  const [onLight, setOnLight] = useState(heroLight);
+  const [scrolled, setScrolled] = useState(false);
+  useMotionValueEvent(scrollY, 'change', (y) => {
+    const next = heroLight && y < window.innerHeight - 64;
+    setOnLight((prev) => (prev === next ? prev : next));
+    setScrolled(y > 80);
+  });
 
   return (
     <>
       <motion.header
-        className="fixed top-0 w-full z-50"
+        className="fixed top-0 w-full z-50 transition-colors duration-300"
         style={{
-          backgroundColor: `rgba(8,8,8,${bgOpacity.get()})`,
-          backdropFilter: 'blur(20px)',
+          backgroundColor: onLight || !scrolled ? 'rgba(8,8,8,0)' : 'rgba(8,8,8,0.92)',
+          backdropFilter: onLight || !scrolled ? 'none' : 'blur(20px)',
         }}
       >
         <motion.div
           className="absolute inset-x-0 bottom-0 h-px bg-white"
-          style={{ opacity: borderOpacity }}
+          style={{ opacity: onLight || !scrolled ? 0 : borderOpacity }}
         />
 
         <nav className="max-w-[1400px] mx-auto px-8 h-16 flex items-center justify-between">
@@ -45,7 +52,7 @@ export default function Header() {
             <span className="w-8 h-8 rounded-sm bg-[#2dd4bf] flex items-center justify-center text-black text-sm font-extrabold leading-none">
               CA
             </span>
-            <span className="text-sm font-semibold text-[#f0f0f0]/80 group-hover:text-[#f0f0f0] transition-colors duration-200">
+            <span className={`text-sm font-semibold transition-colors duration-200 ${onLight ? 'text-[#141414]/80 group-hover:text-black' : 'text-[#f0f0f0]/80 group-hover:text-[#f0f0f0]'}`}>
               Chinedu Aguwa
             </span>
           </button>
@@ -64,7 +71,7 @@ export default function Header() {
               >
                 <button
                   onClick={() => scrollTo(item.href)}
-                  className="relative text-sm text-[#8a8a8a] hover:text-[#f0f0f0] transition-colors duration-200 group py-1"
+                  className={`relative text-sm transition-colors duration-200 group py-1 ${onLight ? 'text-[#141414]/60 hover:text-black' : 'text-[#8a8a8a] hover:text-[#f0f0f0]'}`}
                   data-cursor="link"
                 >
                   {item.name}
@@ -82,7 +89,7 @@ export default function Header() {
 
           {/* Mobile Toggle */}
           <button
-            className="md:hidden text-[#f0f0f0] p-1"
+            className={`md:hidden p-1 ${onLight && !isOpen ? 'text-[#141414]' : 'text-[#f0f0f0]'}`}
             onClick={() => setIsOpen((v) => !v)}
             aria-label={isOpen ? 'Close menu' : 'Open menu'}
             data-cursor="button"
