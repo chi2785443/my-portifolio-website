@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import {
   ExternalLink, Github, Filter, Smartphone,
-  Globe, Wrench, Brain, ArrowUpRight,
+  Globe, Wrench, Brain, ArrowUpRight, ChevronLeft, ChevronRight,
 } from 'lucide-react';
 
 const filters = [
@@ -14,10 +14,18 @@ const filters = [
 ];
 
 const categoryAccent: Record<string, string> = {
-  'AI Models':         '#8b5cf6',
-  'Web Apps':          '#3b82f6',
-  'Mobile Apps':       '#2dd4bf',
-  'Engineering Tools': '#f59e0b',
+  'AI Models':         '#a78bfa',
+  'Web Apps':          '#38bdf8',
+  'Mobile Apps':       '#ff6b9d',
+  'Engineering Tools': '#fbbf24',
+};
+
+// Bright card backdrops, one per category
+const categoryTint: Record<string, string> = {
+  'AI Models':         '#d8ccff',
+  'Web Apps':          '#bfe3ff',
+  'Mobile Apps':       '#ffc6da',
+  'Engineering Tools': '#ffe3a3',
 };
 
 /* ─── SVG Illustrations ──────────────────────────────────────── */
@@ -311,174 +319,128 @@ function getIllustration(key: string, accent: string) {
 const projects = [
   {
     title: 'DoE Concrete Mixer App',
-    description: 'Mobile application automating the British DoE concrete mix design procedure. Converts empirical charts into validated polynomial equations, achieving sub-3% error across all design examples.',
+    description: 'A mobile app that does the British DoE concrete mix design for you. I turned the method’s charts into equations, and the results stay within 3% of the manual calculations.',
     category: 'Mobile Apps', illustration: 'concrete',
     tech: ['React Native', 'Python', 'TensorFlow', 'SQLite'],
-    github: '#', demo: '#', featured: true,
+    github: 'https://github.com/chi2785443/doe-concrete-mix-design-app', demo: '', featured: true,
   },
   {
     title: 'EduCore LMS',
-    description: 'Learning Management System with real-time collaboration, progress tracking, and AI-powered content recommendations for schools and institutions.',
+    description: 'A SaaS platform for schools and education agencies to run day-to-day operations, communication and analytics in one place.',
     category: 'Web Apps', illustration: 'lms',
     tech: ['Next.js', 'NestJS', 'PostgreSQL', 'Redis'],
-    github: '#', demo: '#', featured: true,
+    github: 'https://github.com/chi2785443/educore-mobile', demo: '', featured: true,
   },
   {
     title: 'BuildCore',
-    description: 'Construction management platform integrating Bills of Quantities with embodied carbon accounting, LCA metrics, and an AI-driven material substitution engine toward net-zero targets.',
+    description: 'A construction management platform that connects Bills of Quantities to embodied carbon and LCA data, and suggests lower-carbon materials on the way to net-zero.',
     category: 'Web Apps', illustration: 'buildcore',
     tech: ['React', 'Django', 'PostgreSQL', 'Docker'],
-    github: '#', demo: '#', featured: true,
+    github: '', demo: '', featured: true,
   },
   {
     title: 'Pavement Distress Detection',
-    description: 'CNN trained on 30,000 labelled pavement images for multi-class distress detection. TFLite on-device inference with real-time GPS tagging and Google Maps visualisation.',
+    description: 'A CNN trained on 30,000 pavement photos to spot cracks and potholes. It runs on the phone with TensorFlow Lite, tags each find with GPS and maps it on Google Maps.',
     category: 'AI Models', illustration: 'pavement',
     tech: ['TensorFlow Lite', 'Flutter', 'FastAPI', 'OpenCV'],
-    github: '#', demo: '#', featured: false,
+    github: 'https://github.com/chi2785443/pavement-distress-detector-flutter-app', demo: '', featured: false,
   },
   {
     title: 'Structural Analysis Tool',
-    description: 'Web-based structural analysis app for beam and frame calculations with interactive bending moment and shear force visualisation.',
+    description: 'A desktop app for reinforced concrete design to BS8110. It designs beams, columns, slabs and pad foundations with step-by-step calculations and shear force and bending moment charts.',
     category: 'Engineering Tools', illustration: 'structural',
-    tech: ['React', 'Python', 'NumPy', 'Three.js'],
-    github: '#', demo: '#', featured: false,
+    tech: ['Tauri', 'React', 'TypeScript', 'BS8110'],
+    github: 'https://github.com/chi2785443/structcore', demo: '', featured: false,
   },
   {
     title: 'Bulldozer Price Prediction',
-    description: 'Time-series Random Forest model predicting bulldozer sale prices from 1990-2015 auction data. R2 = 0.889 on held-out test set.',
+    description: 'A Random Forest that predicts bulldozer sale prices from 1990 to 2015 auction data. It scored R² = 0.889 on data it hadn’t seen.',
     category: 'AI Models', illustration: 'chart-line',
     tech: ['Python', 'Pandas', 'Scikit-Learn', 'Matplotlib'],
-    github: '#', demo: '#', featured: false,
+    github: '', demo: '', featured: false,
   },
   {
     title: 'British DoE Mix Design ML',
-    description: 'Random Forest ensemble (712 records) predicting aggregate-to-cement ratios. R2 = 0.91, MAE = 0.08, stable via 5-fold CV.',
+    description: 'A Random Forest trained on 712 real concrete mix records to predict aggregate-to-cement ratios. R² = 0.91, MAE = 0.08, and stable under 5-fold cross-validation.',
     category: 'AI Models', illustration: 'concrete',
     tech: ['Python', 'Scikit-Learn', 'NumPy', 'Joblib'],
-    github: '#', demo: '#', featured: false,
+    github: 'https://github.com/chi2785443/concrete-mix-ratio-ml', demo: '', featured: false,
   },
   {
     title: 'FutmitePadi Student App',
-    description: 'Flutter mobile app for FUT Minna students - lecture library, secondhand marketplace, and hostel finder in one platform.',
+    description: 'A Flutter app for students at my university, FUT Minna: connect, study and prepare for exams, with a lecture library, a secondhand marketplace and a hostel finder.',
     category: 'Mobile Apps', illustration: 'phone',
     tech: ['Flutter', 'Firebase', 'Node.js', 'MongoDB'],
-    github: '#', demo: '#', featured: false,
+    github: 'https://github.com/chi2785443/futmitepadi', demo: '', featured: false,
   },
   {
     title: 'Fintech Crypto Tracker',
-    description: 'Full-stack app for real-time cryptocurrency price tracking via CoinGecko API, available on web and mobile.',
+    description: 'Live cryptocurrency prices from the CoinGecko API, on web and mobile.',
     category: 'Web Apps', illustration: 'chart-candle',
     tech: ['React', 'React Native', 'NestJS', 'MySQL'],
-    github: '#', demo: '#', featured: false,
+    github: 'https://github.com/chi2785443/crypto-place-website', demo: '', featured: false,
   },
 ];
 
-/* ─── Featured Card (2-column layout) ───────────────────────── */
-
-function FeaturedCard({ project, index }: { project: typeof projects[0]; index: number }) {
-  const accent = categoryAccent[project.category] ?? '#2dd4bf';
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      className="grid grid-cols-1 md:grid-cols-[280px_1fr] border border-white/7 rounded-2xl overflow-hidden group hover:border-white/12 transition-colors duration-300"
-    >
-      {/* Illustration panel */}
-      <div className="bg-[#0d0d0d] flex items-center justify-center px-4 py-6 h-52 md:h-auto">
-        {getIllustration(project.illustration, accent)}
-      </div>
-
-      {/* Content */}
-      <div className="bg-[#141414] p-7 flex flex-col justify-between">
-        <div>
-          <div className="flex items-center gap-2 mb-4">
-            <span className="w-1.5 h-1.5 rounded-full" style={{ background: accent }} />
-            <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-[#444]">
-              {project.category}
-            </span>
-          </div>
-          <h3 className="text-xl font-bold text-[#f0f0f0] mb-3 leading-tight group-hover:text-[#2dd4bf] transition-colors duration-200">
-            {project.title}
-          </h3>
-          <p className="text-[#666] text-sm leading-relaxed mb-5">{project.description}</p>
-          <div className="flex flex-wrap gap-1.5">
-            {project.tech.map(t => (
-              <span key={t} className="text-[11px] font-mono px-2.5 py-1 border border-white/7 rounded-full text-[#444]">
-                {t}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="flex gap-3 mt-6 pt-5 border-t border-white/5">
-          <a href={project.github} data-cursor="link"
-            className="flex items-center gap-1.5 text-sm text-[#555] hover:text-[#f0f0f0] transition-colors duration-200">
-            <Github size={14} /> Code
-          </a>
-          <a href={project.demo} data-cursor="link"
-            className="flex items-center gap-1.5 text-sm text-[#555] hover:text-[#2dd4bf] transition-colors duration-200">
-            <ExternalLink size={14} /> Demo
-          </a>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-/* ─── Grid Card ──────────────────────────────────────────────── */
+/* ─── Card ───────────────────────────────────────────────────── */
 
 function ProjectCard({ project, index }: { project: typeof projects[0]; index: number }) {
-  const accent = categoryAccent[project.category] ?? '#2dd4bf';
+  const accent = categoryAccent[project.category] ?? '#ff6b9d';
+  const tint = categoryTint[project.category] ?? '#ffc6da';
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.96 }}
-      transition={{ duration: 0.38, delay: index * 0.04, ease: [0.16, 1, 0.3, 1] }}
-      className="group flex flex-col border border-white/7 rounded-xl overflow-hidden hover:border-white/12 transition-colors duration-300"
-      data-cursor="link"
+    <motion.article
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6, delay: Math.min(index, 4) * 0.06, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ y: -6 }}
+      className="group flex w-[300px] shrink-0 snap-start flex-col rounded-[28px] p-3 shadow-[0_18px_40px_rgba(120,60,90,0.12)] sm:w-[360px]"
+      style={{ backgroundColor: tint }}
     >
-      {/* Illustration */}
-      <div className="bg-[#0d0d0d] h-44 flex items-center justify-center px-3 py-3">
+      {/* Illustration tile */}
+      <div className="flex h-32 items-center justify-center rounded-[20px] bg-[#1c1625] px-4 py-3 sm:h-36">
         {getIllustration(project.illustration, accent)}
       </div>
 
-      {/* Content */}
-      <div className="bg-[#141414] p-5 flex flex-col flex-1">
-        <div className="flex items-center gap-2 mb-4">
-          <span className="w-1.5 h-1.5 rounded-full" style={{ background: accent }} />
-          <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-[#444]">
-            {project.category}
-          </span>
-        </div>
-        <h3 className="text-[15px] font-bold text-[#f0f0f0] mb-2.5 leading-snug group-hover:text-[#2dd4bf] transition-colors duration-200">
-          {project.title}
-        </h3>
-        <p className="text-[#555] text-sm leading-relaxed line-clamp-2 mb-4 flex-1">
+      <div className="flex flex-1 flex-col px-3 pb-2 pt-4 text-[#1c1625]">
+        <span className="mb-2 w-fit rounded-full bg-white/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.08em]">
+          {project.category}
+        </span>
+        <h3 className="mb-1.5 text-lg font-extrabold leading-tight tracking-tight">{project.title}</h3>
+        <p className="mb-3 line-clamp-2 flex-1 text-[13px] leading-relaxed text-[#1c1625]/70">
           {project.description}
         </p>
-        <div className="flex flex-wrap gap-1.5 mb-4">
-          {project.tech.map(t => (
-            <span key={t} className="text-[11px] font-mono px-2 py-0.5 border border-white/7 rounded-full text-[#444]">
+        <div className="mb-4 flex flex-wrap gap-1.5">
+          {project.tech.map((t) => (
+            <span key={t} className="rounded-full bg-[#1c1625]/10 px-2.5 py-1 text-[11px] font-semibold">
               {t}
             </span>
           ))}
         </div>
-        <div className="flex items-center gap-4 pt-4 border-t border-white/5">
-          <a href={project.github} data-cursor="link"
-            className="flex items-center gap-1.5 text-xs text-[#444] hover:text-[#f0f0f0] transition-colors duration-200">
-            <Github size={12} /> Code
-          </a>
-          <a href={project.demo} data-cursor="link"
-            className="flex items-center gap-1.5 text-xs text-[#444] hover:text-[#2dd4bf] transition-colors duration-200">
-            <ExternalLink size={12} /> Demo
-          </a>
+        <div className="flex items-center gap-2">
+          {project.github && (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 rounded-full bg-[#1c1625] px-4 py-2 text-xs font-bold text-white transition-transform hover:scale-105"
+            >
+              <Github size={13} /> View on GitHub
+            </a>
+          )}
+          {project.demo && (
+            <a
+              href={project.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 rounded-full bg-white/70 px-4 py-2 text-xs font-bold transition-colors hover:bg-white"
+            >
+              <ExternalLink size={13} /> Live demo
+            </a>
+          )}
         </div>
       </div>
-    </motion.div>
+    </motion.article>
   );
 }
 
@@ -486,100 +448,97 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
 
 export default function Projects() {
   const [active, setActive] = useState('All');
-  const featured = projects.filter(p => p.featured);
-  const rest      = projects.filter(p => !p.featured);
-  const filtered  = active === 'All' ? rest : rest.filter(p => p.category === active);
+  const railRef = useRef<HTMLDivElement>(null);
+  const filtered = active === 'All' ? projects : projects.filter((p) => p.category === active);
+
+  const scrollRail = (dir: 1 | -1) =>
+    railRef.current?.scrollBy({ left: dir * 380, behavior: 'smooth' });
 
   return (
-    <section id="projects" className="py-32 bg-[#0f0f0f]">
-      <div className="max-w-[1400px] mx-auto px-8">
+    <section
+      id="projects"
+      className="relative overflow-hidden py-10 text-[#1c1625]"
+      style={{ background: 'linear-gradient(180deg,#fbd7e5 0%,#f9e1ea 45%,#fbe9dc 100%)' }}
+    >
+      {/* Bright colour blobs */}
+      <div className="pointer-events-none absolute -left-32 top-10 h-96 w-96 rounded-full bg-[#c9b8ff]/60 blur-[100px]" />
+      <div className="pointer-events-none absolute -right-24 top-40 h-96 w-96 rounded-full bg-[#ffd27a]/60 blur-[100px]" />
+      <div className="pointer-events-none absolute bottom-0 left-1/3 h-80 w-80 rounded-full bg-[#9fd8ff]/50 blur-[100px]" />
 
+      <div className="relative mx-auto max-w-[1400px] px-6 md:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
-          className="mb-16"
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-6 text-center"
         >
-          <p className="text-xs font-mono uppercase tracking-[0.15em] text-[#2dd4bf] mb-3">Work</p>
-          <h2 className="text-4xl md:text-5xl font-extrabold tracking-[-0.03em] text-[#f0f0f0]">
-            Selected Projects
+          <h2 className="text-[clamp(2.2rem,5.5vw,4.2rem)] font-extrabold leading-none tracking-[-0.04em]">
+            Selected work
           </h2>
-        </motion.div>
-
-        {/* Featured cards */}
-        <div className="space-y-5 mb-24">
-          {featured.map((p, i) => (
-            <FeaturedCard key={p.title} project={p} index={i} />
-          ))}
-        </div>
-
-        {/* Divider */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="flex items-center gap-5 mb-10"
-        >
-          <p className="text-xs font-mono uppercase tracking-[0.15em] text-[#2dd4bf] shrink-0">More work</p>
-          <div className="flex-1 h-px bg-white/5" />
+          <p className="mx-auto mt-3 max-w-xl text-sm text-[#1c1625]/65">
+            Web platforms, mobile apps, engineering tools and ML models, from civil infrastructure to
+            intelligent systems.
+          </p>
         </motion.div>
 
         {/* Filters */}
-        <div className="flex flex-wrap gap-2 mb-8">
+        <div className="mb-5 flex flex-wrap justify-center gap-2">
           {filters.map(({ name, icon: Icon }) => (
             <button
               key={name}
               onClick={() => setActive(name)}
-              data-cursor="button"
-              className="relative flex items-center gap-1.5 px-4 py-2 text-sm rounded-full border transition-colors duration-200"
-              style={{
-                borderColor: active === name ? 'rgba(45,212,191,0.4)' : 'rgba(255,255,255,0.07)',
-                color:       active === name ? '#2dd4bf' : '#555',
-                backgroundColor: active === name ? 'rgba(45,212,191,0.07)' : 'transparent',
-              }}
+              className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-200 ${
+                active === name
+                  ? 'bg-[#1c1625] text-white'
+                  : 'bg-white/60 text-[#1c1625]/70 hover:bg-white'
+              }`}
             >
-              {active === name && (
-                <motion.span
-                  layoutId="filter-pill"
-                  className="absolute inset-0 rounded-full"
-                  style={{ background: 'rgba(45,212,191,0.07)' }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-                />
-              )}
-              <Icon size={12} />
-              <span className="relative">{name}</span>
+              <Icon size={13} />
+              {name}
             </button>
           ))}
         </div>
+      </div>
 
-        {/* Grid */}
-        <AnimatePresence mode="popLayout">
-          <motion.div key={active} className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.map((p, i) => (
-              <ProjectCard key={p.title} project={p} index={i} />
-            ))}
-          </motion.div>
-        </AnimatePresence>
-
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="mt-16 flex justify-center"
+      {/* Rail */}
+      <div className="relative">
+        <div
+          ref={railRef}
+          key={active}
+          className="flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-5 pt-2 [scroll-padding-inline:1.5rem] md:px-[max(2rem,calc((100vw-1400px)/2+2rem))] md:[scroll-padding-inline:max(2rem,calc((100vw-1400px)/2+2rem))] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          <a
-            href="https://github.com/chi2785443"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-cursor="link"
-            className="flex items-center gap-2 text-sm text-[#555] border border-white/8 rounded-lg px-6 py-3 hover:border-white/16 hover:text-[#f0f0f0] transition-all duration-200"
-          >
-            View all on GitHub <ArrowUpRight size={14} />
-          </a>
-        </motion.div>
+          {filtered.map((p, i) => (
+            <ProjectCard key={p.title} project={p} index={i} />
+          ))}
+        </div>
+      </div>
 
+      <div className="relative mx-auto mt-1 flex max-w-[1400px] items-center justify-between px-6 md:px-8">
+        <div className="flex gap-2">
+          <button
+            onClick={() => scrollRail(-1)}
+            aria-label="Scroll left"
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-white/70 transition-colors hover:bg-white"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button
+            onClick={() => scrollRail(1)}
+            aria-label="Scroll right"
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-[#1c1625] text-white transition-transform hover:scale-105"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+        <a
+          href="https://github.com/chi2785443"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 rounded-full bg-white/70 px-5 py-3 text-sm font-semibold transition-colors hover:bg-white"
+        >
+          View all on GitHub <ArrowUpRight size={14} />
+        </a>
       </div>
     </section>
   );

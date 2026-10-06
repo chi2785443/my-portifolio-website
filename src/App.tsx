@@ -10,7 +10,6 @@ import Skills from './components/Skills';
 import Research from './components/Research';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import CustomCursor from './components/ui/CustomCursor';
 import ScrollProgressBar from './components/ui/ScrollProgressBar';
 
 function App() {
@@ -31,7 +30,6 @@ function App() {
 
   return (
     <div className="bg-[#080808] text-[#f0f0f0] min-h-screen">
-      <CustomCursor />
       <ScrollProgressBar />
       <Header />
       <Hero />

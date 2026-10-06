@@ -32,7 +32,7 @@ export default function Hero() {
     <section
       id="hero"
       ref={sectionRef}
-      className="relative flex flex-col min-h-[100dvh] overflow-hidden bg-[#f1ece2] text-[#141414]"
+      className="relative flex flex-col min-h-[85dvh] overflow-hidden bg-[#f1ece2] text-[#141414]"
     >
       {/* Soft warm glow */}
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full bg-[#fff8e8] blur-[120px] pointer-events-none" />
@@ -70,15 +70,15 @@ export default function Hero() {
           >
             Software
             <br />
-            Engineer<span className="text-[#0d9488]">.</span>
+            Engineer<span className="text-[#8f3d56]">.</span>
           </motion.h1>
 
           <motion.p
             variants={itemVariants}
             className="text-sm md:text-base text-[#141414]/65 leading-relaxed max-w-sm"
           >
-            Civil engineer turned ML researcher. I publish peer-reviewed work on AI for
-            infrastructure and sustainability, and ship the software behind it.
+            I'm a civil engineer who got hooked on software. I build carbon accounting tools
+            for a living, and I research how AI can make buildings and roads work better.
           </motion.p>
         </div>
 
@@ -107,7 +107,7 @@ export default function Hero() {
             {[
               { icon: Github, href: 'https://github.com/Chi2785443', label: 'GitHub' },
               { icon: Linkedin, href: 'https://www.linkedin.com/in/chinedu-aguwa/', label: 'LinkedIn' },
-              { icon: Mail, href: 'mailto:chineduaguwa0@gmail.com', label: 'Email' },
+              { icon: Mail, href: 'mailto:chineduaguwaofficial@gmail.com', label: 'Email' },
             ].map(({ icon: Icon, href, label }) => (
               <a
                 key={label}
@@ -116,7 +116,7 @@ export default function Hero() {
                 rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 aria-label={label}
                 data-cursor="link"
-                className="text-[#141414]/45 hover:text-[#0d9488] transition-colors duration-200"
+                className="text-[#141414]/45 hover:text-[#8f3d56] transition-colors duration-200"
               >
                 <Icon size={20} />
               </a>
@@ -136,7 +136,7 @@ export default function Hero() {
         <img
           src="/profile.jpg"
           alt="Chinedu Aguwa"
-          className="block w-[min(88vw,420px)] lg:w-auto lg:h-[min(78vh,820px)] aspect-square object-cover mix-blend-multiply"
+          className="block w-[min(88vw,420px)] lg:w-auto lg:h-[min(70vh,760px)] aspect-square object-cover mix-blend-multiply"
           style={{
             WebkitMaskImage:
               'radial-gradient(ellipse 54% 100% at 50% 100%, #000 45%, transparent 100%)',

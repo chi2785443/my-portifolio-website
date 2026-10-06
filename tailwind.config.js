@@ -9,9 +9,9 @@ export default {
       },
       colors: {
         accent: {
-          DEFAULT: '#2dd4bf',
-          dim: '#0d9488',
-          glow: 'rgba(45,212,191,0.15)',
+          DEFAULT: '#b5546e',
+          dim: '#8f3d56',
+          glow: 'rgba(181,84,110,0.15)',
         },
         surface: {
           base: '#080808',
@@ -21,7 +21,7 @@ export default {
       },
       borderColor: {
         subtle: 'rgba(255,255,255,0.07)',
-        accent: 'rgba(45,212,191,0.25)',
+        accent: 'rgba(181,84,110,0.25)',
       },
     },
   },

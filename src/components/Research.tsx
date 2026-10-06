@@ -1,231 +1,167 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ExternalLink, BookOpen, Microscope, Zap, Building } from 'lucide-react';
+import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { ExternalLink } from 'lucide-react';
 
-const researchAreas = [
-  {
-    num: '01',
-    title: 'British DoE Concrete Mix Design Procedure Using Python',
-    status: 'Published',
-    publications: 1,
-    description: 'Developed a Python algorithm automating the British DoE concrete mix design procedure by converting empirical charts and interpolation tables into linear and polynomial equations, eliminating manual computation error. Validated against manual DoE calculations and published datasets across multiple design examples, percentage errors ranged from 0.65% to 3.0%, with a mean absolute error of 4.3%. Resulted in a peer-reviewed publication in the Nile Journal of Engineering and Applied Science (2025). DOI: 10.5455/njeas.238594',
-    keywords: ['Python', 'British DoE Method', 'Concrete Mix Design', 'Algorithm Development'],
-  },
-  {
-    num: '02',
-    title: 'Pavement Distress Detection Using Deep Learning',
-    status: 'Under Review',
-    publications: 1,
-    description: 'Collaborative research using images collected in Kaduna, Nigeria. Designed and trained a Convolutional Neural Network on a dataset of 30,000 labelled pavement images, achieving distress classification across multiple failure types. Built a mobile application integrating the exported TensorFlow Lite model with real-time GPS tagging, detection logging, and Google Maps visualisation of historical distress locations. Demonstrates the viability of deep learning for scalable, low-cost pavement condition monitoring in infrastructure-constrained environments. Under review, 2026.',
-    keywords: ['CNN', 'TensorFlow Lite', 'OpenCV', 'FastAPI', 'Google Maps SDK', 'Infrastructure'],
-  },
-  {
-    num: '03',
-    title: 'Concrete Mix Design Using Machine Learning',
-    status: 'Completed',
-    publications: 0,
-    description: 'Case study of Shiroro, Dama, and Gidan Mangoro communities, Niger State. Developed a Random Forest ensemble model trained on 712 real-world mix design records to simultaneously predict concrete mix ratios. Benchmarked four algorithms (Linear Regression, Decision Tree, Random Forest, XGBoost). Random Forest achieved R² = 0.91 and MAE = 0.08, confirmed stable via 5-fold cross-validation. Fine fraction (importance: 0.31) and paste volume (0.18) identified as dominant predictors.',
-    keywords: ['Random Forest', 'Scikit-Learn', 'Cross-Validation', 'Feature Engineering', 'Civil Engineering'],
-  },
-  {
-    num: '04',
-    title: 'BuildCore, Sustainable Construction Management Platform',
-    status: 'Ongoing',
-    publications: 0,
-    description: 'Developing BuildCore, a construction management platform integrating Bills of Quantities (BoQ) with embodied carbon accounting to quantify project emissions and potential carbon credit generation. Constructing an extensible material database incorporating lifecycle assessment (LCA) metrics and AI/ML optimisation models for adaptive material selection aligned with net-zero construction targets. Designing an intelligent material substitution framework recommending lower-carbon alternatives guided by performance, cost, and environmental constraints.',
-    keywords: ['Django', 'React Native', 'LCA', 'Embodied Carbon', 'AI Optimisation', 'Net-Zero'],
-  },
-];
-
-const publications = [
-  {
-    title: 'Development of a Simplified Methodology for British DoE Concrete Mix Design Procedure Using Python',
-    journal: 'Nile Journal of Engineering and Applied Science',
-    year: '2025',
-    type: 'Research Paper',
-    status: 'Published',
-    link: 'https://doi.org/10.5455/njeas.238594',
-  },
-  {
-    title: 'Pavement Distress Detection Using Deep Learning',
-    journal: 'Under Review',
-    year: '2026',
-    type: 'Research Paper',
-    status: 'Under Review',
-    link: '',
-  },
-];
-
-const interests = [
-  { icon: Microscope, label: 'AI in Civil Engineering', sub: 'ML and deep learning for infrastructure assessment' },
-  { icon: Zap, label: 'Carbon Accounting', sub: 'Embodied carbon quantification and net-zero construction' },
-  { icon: Building, label: 'Sustainable Design', sub: 'LCA-driven material selection and BoQ optimisation' },
-  { icon: BookOpen, label: 'Computer Vision', sub: 'CNN-based defect detection for road and structural assets' },
-];
-
-const statusDot: Record<string, string> = {
-  Published: 'bg-green-400',
-  Ongoing: 'bg-[#2dd4bf]',
-  Completed: 'bg-[#2dd4bf]',
-  'In Progress': 'bg-amber-400',
-  'Under Review': 'bg-amber-400',
-  Presented: 'bg-[#2dd4bf]',
+const paper = {
+  title: 'Development of a Simplified Methodology for British DoE Concrete Mix Design Procedure Using Python',
+  journal: 'Nile Journal of Engineering and Applied Science',
+  year: '2025',
+  link: 'https://doi.org/10.5455/njeas.238594',
 };
 
-function ResearchRow({ area, index }: { area: typeof researchAreas[0]; index: number }) {
-  const [open, setOpen] = useState(false);
+// Inner outline of the tube, used to clip the liquid
+const TUBE = 'M62 40 L62 372 Q62 436 100 436 Q138 436 138 372 L138 40 Z';
 
+const bubbles = [
+  { x: 84, size: 5, delay: 0, dur: 4.2 },
+  { x: 108, size: 7, delay: 1.1, dur: 5.1 },
+  { x: 96, size: 4, delay: 2.2, dur: 3.8 },
+  { x: 120, size: 6, delay: 0.6, dur: 4.7 },
+  { x: 90, size: 3, delay: 3.1, dur: 3.5 },
+];
+
+function TestTube({ filled }: { filled: boolean }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.5, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
-      className="border-b border-white/5 last:border-0"
-    >
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-start md:items-center gap-6 py-5 text-left group"
-        data-cursor="button"
-      >
-        <span className="text-2xl font-extrabold font-mono text-[#888] group-hover:text-[#2dd4bf]/60 transition-colors shrink-0 w-10">
-          {area.num}
-        </span>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${statusDot[area.status] ?? 'bg-[#555]'}`} />
-            <span className="text-xs font-mono text-[#b8b8b8]">{area.status}</span>
-          </div>
-          <h3 className="text-[#f0f0f0] font-semibold group-hover:text-[#2dd4bf] transition-colors duration-200">
-            {area.title}
-          </h3>
-        </div>
-        <motion.div
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-          className="text-[#888] shrink-0"
-        >
-          <ChevronDown size={16} />
-        </motion.div>
-      </button>
+    <svg viewBox="0 0 200 480" className="h-auto w-full" role="img" aria-label="A test tube filling with liquid">
+      <defs>
+        <clipPath id="tube-clip">
+          <path d={TUBE} />
+        </clipPath>
+        <linearGradient id="liquid" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#ff8fb0" />
+          <stop offset="0.6" stopColor="#b5546e" />
+          <stop offset="1" stopColor="#6e2840" />
+        </linearGradient>
+        <linearGradient id="glass" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#fff" stopOpacity="0.22" />
+          <stop offset="0.35" stopColor="#fff" stopOpacity="0.04" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0.14" />
+        </linearGradient>
+        <radialGradient id="tube-glow" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stopColor="#ff8fb0" stopOpacity="0.45" />
+          <stop offset="1" stopColor="#ff8fb0" stopOpacity="0" />
+        </radialGradient>
+      </defs>
 
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            key="body"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden"
-          >
-            <div className="pb-5 ml-16">
-              <p className="text-[#c0c0c0] text-sm leading-relaxed mb-4">{area.description}</p>
-              <div className="flex flex-wrap gap-2">
-                {area.keywords.map((k) => (
-                  <span key={k} className="text-[11px] font-mono px-2.5 py-1 border border-white/15 rounded-full text-[#a0a0a0]">{k}</span>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
+      {/* Glow behind the glass */}
+      <motion.ellipse
+        cx="100" cy="320" rx="95" ry="130" fill="url(#tube-glow)"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: filled ? 1 : 0 }}
+        transition={{ duration: 1.2, delay: 0.4 }}
+      />
+
+      {/* Liquid, clipped to the tube */}
+      <g clipPath="url(#tube-clip)">
+        <motion.g
+          initial={{ y: 330 }}
+          animate={{ y: filled ? 0 : 330 }}
+          transition={{ duration: 2.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+        >
+          {/* Drifting wave on the surface */}
+          <motion.path
+            d="M-100 170 q25 -12 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 L400 480 L-100 480 Z"
+            fill="url(#liquid)"
+            animate={{ x: [0, 100] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: 'linear' }}
+          />
+          {/* Bubbles */}
+          {bubbles.map((b, i) => (
+            <motion.circle
+              key={i}
+              cx={b.x}
+              r={b.size}
+              fill="#fff"
+              fillOpacity="0.45"
+              initial={{ cy: 420, opacity: 0 }}
+              animate={{ cy: [420, 190], opacity: [0, 0.8, 0] }}
+              transition={{ duration: b.dur, repeat: Infinity, delay: b.delay, ease: 'easeOut' }}
+            />
+          ))}
+        </motion.g>
+      </g>
+
+      {/* Glass */}
+      <path d={TUBE} fill="url(#glass)" stroke="#fff" strokeOpacity="0.4" strokeWidth="3" />
+      <path d="M72 60 L72 360" stroke="#fff" strokeOpacity="0.35" strokeWidth="4" strokeLinecap="round" />
+      {/* Rim */}
+      <rect x="52" y="30" width="96" height="14" rx="7" fill="#fff" fillOpacity="0.2" stroke="#fff" strokeOpacity="0.5" strokeWidth="2" />
+
+      {/* Measurement ticks */}
+      {[110, 160, 210, 260, 310, 360].map((y, i) => (
+        <g key={y}>
+          <line x1="138" x2={i % 2 === 0 ? 152 : 146} y1={y} y2={y} stroke="#fff" strokeOpacity="0.45" strokeWidth="2" strokeLinecap="round" />
+        </g>
+      ))}
+
+      {/* Stand */}
+      <ellipse cx="100" cy="452" rx="62" ry="9" fill="#000" opacity="0.45" />
+    </svg>
   );
 }
 
 export default function Research() {
-  return (
-    <section id="research" className="py-32 bg-[#0f0f0f]">
-      <div className="max-w-[1400px] mx-auto px-8">
+  const stageRef = useRef<HTMLDivElement>(null);
+  const filled = useInView(stageRef, { once: true, amount: 0.4 });
 
-        {/* Section label */}
+  return (
+    <section id="research" className="relative overflow-hidden bg-[#0f0f0f] py-14">
+      <div className="pointer-events-none absolute -left-32 bottom-0 h-[420px] w-[420px] rounded-full bg-[#b5546e]/[0.08] blur-[130px]" />
+      <div className="relative mx-auto max-w-[1400px] px-6 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6 }}
-          className="mb-16"
+          className="mb-8"
         >
-          <p className="text-xs font-mono uppercase tracking-[0.15em] text-[#2dd4bf] mb-3">Academic</p>
-          <h2 className="text-4xl md:text-5xl font-extrabold tracking-[-0.03em] text-[#f0f0f0]">
-            Research & Innovation
-          </h2>
+          <p className="mb-3 text-xs font-mono uppercase tracking-[0.15em] text-[#b5546e]">Academic</p>
+          <h2 className="text-4xl font-extrabold tracking-[-0.03em] text-[#f0f0f0] md:text-5xl">Research</h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-16">
-
-          {/* Research accordion */}
-          <div>
-            {researchAreas.map((area, i) => (
-              <ResearchRow key={area.num} area={area} index={i} />
-            ))}
+        <div className="grid items-center gap-8 lg:grid-cols-[200px_1fr] lg:gap-14">
+          <div ref={stageRef} className="mx-auto w-full max-w-[120px] lg:max-w-[160px]">
+            <TestTube filled={filled} />
           </div>
 
-          {/* Publications + interests */}
-          <div className="space-y-10">
+          <div className="space-y-6">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6 }}
+              className="max-w-xl text-base leading-relaxed text-[#c8c8c8]"
+            >
+              I like solving problems. Give me something slow, broken or still done by hand and I won't rest
+              until I've found a better way. I stick with it, test it, verify it, and then make it available so
+              other people can use it. If you're working on something like that, let's talk.
+            </motion.p>
 
-            {/* Publications */}
-            <div>
-              <p className="text-xs font-mono uppercase tracking-[0.1em] text-[#2dd4bf]/70 mb-5">Publications</p>
-              <div className="space-y-0">
-                {publications.map((pub, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.08 }}
-                    className="py-4 border-b border-white/5 last:border-0"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <p className="text-[#f0f0f0] text-sm font-medium leading-snug mb-2">{pub.title}</p>
-                        <p className="text-xs text-[#a0a0a0] font-mono">{pub.journal} · {pub.year}</p>
-                      </div>
-                      {pub.link && (
-                        <a
-                          href={pub.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          data-cursor="link"
-                          className="text-[#888] hover:text-[#2dd4bf] transition-colors shrink-0 mt-0.5"
-                        >
-                          <ExternalLink size={14} />
-                        </a>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className={`w-1.5 h-1.5 rounded-full ${statusDot[pub.status] ?? 'bg-[#555]'}`} />
-                      <span className="text-xs text-[#b8b8b8]">{pub.status}</span>
-                      <span className="text-xs text-[#a0a0a0] border border-white/15 rounded-full px-2 py-0.5 font-mono">{pub.type}</span>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Research interests */}
-            <div>
-              <p className="text-xs font-mono uppercase tracking-[0.1em] text-[#2dd4bf]/70 mb-5">Research Interests</p>
-              <div className="grid grid-cols-2 gap-4">
-                {interests.map(({ icon: Icon, label, sub }, i) => (
-                  <motion.div
-                    key={label}
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.08 }}
-                    className="bg-[#141414] border border-white/5 rounded-xl p-4"
-                  >
-                    <Icon size={16} className="text-[#2dd4bf] mb-3" />
-                    <p className="text-[#f0f0f0] text-sm font-semibold mb-1">{label}</p>
-                    <p className="text-xs text-[#a0a0a0] leading-snug">{sub}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
+            {/* The published paper */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <p className="mb-4 text-xs font-mono uppercase tracking-[0.12em] text-[#b5546e]/80">Published paper</p>
+              <a
+                href={paper.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block max-w-2xl rounded-2xl border border-white/[0.08] bg-[#141414] p-5 transition-colors hover:border-[#b5546e]/50"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <p className="text-base font-bold leading-snug text-[#f0f0f0] transition-colors group-hover:text-[#e7a3b5]">
+                    {paper.title}
+                  </p>
+                  <ExternalLink size={16} className="mt-1 shrink-0 text-[#888] transition-colors group-hover:text-[#b5546e]" />
+                </div>
+                <p className="mt-3 font-mono text-xs text-[#a0a0a0]">
+                  {paper.journal} · {paper.year}
+                </p>
+              </a>
+            </motion.div>
           </div>
         </div>
       </div>
