@@ -32,14 +32,16 @@ function App() {
     <div className="bg-[#080808] text-[#f0f0f0] min-h-screen">
       <ScrollProgressBar />
       <Header />
-      <Hero />
-      <About />
-      <IdCardSection />
-      <Experience />
-      <Projects />
-      <Skills />
-      <Research />
-      <Contact />
+      <main>
+        <Hero />
+        <About />
+        <IdCardSection />
+        <Experience />
+        <Projects />
+        <Skills />
+        <Research />
+        <Contact />
+      </main>
       <Footer />
     </div>
   );

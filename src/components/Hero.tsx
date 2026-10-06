@@ -68,7 +68,7 @@ export default function Hero() {
             variants={itemVariants}
             className="text-[clamp(3.2rem,7vw,6.2rem)] font-extrabold leading-[0.95] tracking-[-0.04em] mb-5"
           >
-            Engineer<span className="text-[#8f3d56]">.</span>
+            <span className="sr-only">Chinedu Aguwa, Software </span>Engineer<span className="text-[#8f3d56]">.</span>
           </motion.h1>
 
           <motion.p
