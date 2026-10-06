@@ -66,10 +66,8 @@ export default function Hero() {
 
           <motion.h1
             variants={itemVariants}
-            className="text-[clamp(3rem,7.5vw,6.5rem)] font-extrabold leading-[0.95] tracking-[-0.04em] mb-5"
+            className="text-[clamp(3.2rem,7vw,6.2rem)] font-extrabold leading-[0.95] tracking-[-0.04em] mb-5"
           >
-            Software
-            <br />
             Engineer<span className="text-[#8f3d56]">.</span>
           </motion.h1>
 
@@ -77,8 +75,7 @@ export default function Hero() {
             variants={itemVariants}
             className="text-sm md:text-base text-[#141414]/65 leading-relaxed max-w-sm"
           >
-            I'm a civil engineer who got hooked on software. I build carbon accounting tools
-            for a living, and I research how AI can make buildings and roads work better.
+            I build, design and create solutions for businesses, like web and mobile apps and AI for infrastructure.
           </motion.p>
         </div>
 

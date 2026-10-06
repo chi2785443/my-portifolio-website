@@ -148,10 +148,10 @@ export default function About() {
                 tools, and I'm working on my own platform that ties Bills of Quantities to embodied carbon.
               </p>
               <p>
-                As a civil engineering graduate, I finished with a first class, 4.79 out of 5. I do structural
-                analysis, design and detailing, site supervision and structural drawings, along with geotechnical
-                testing and building assessments. I've helped design 13+ structures and assessed 50+ existing
-                buildings, which is why my software cares about what actually happens on a site.
+                As a civil engineering graduate, I do structural analysis, design and detailing, site
+                supervision and structural drawings, along with geotechnical testing and building
+                assessments. I've assessed 50+ existing buildings, which is why my software cares about what
+                actually happens on a site.
               </p>
               <p>
                 As a researcher into AI and ML, I use Python, TensorFlow and Scikit-Learn on real civil
@@ -172,7 +172,7 @@ export default function About() {
               </div>
               <h3 className="text-2xl font-extrabold leading-tight tracking-tight">B.Eng Civil Engineering</h3>
               <p className="mt-2 text-sm opacity-90">Federal University of Technology, Minna</p>
-              <p className="mt-1 text-xs opacity-70">First Class Honours · CGPA 4.79/5.0</p>
+              
               <p className="mt-6 font-mono text-xs opacity-60">Sept 2018 – Jan 2025</p>
             </motion.div>
 
