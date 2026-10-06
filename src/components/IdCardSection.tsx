@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useInView, useMotionValue, useTransform } from 'framer-motion';
 import { Code2, FlaskConical, HardHat, ArrowDown } from 'lucide-react';
 
 const phrases = [
@@ -63,6 +63,9 @@ function Barcode() {
 }
 
 export default function IdCardSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  // Observe the section, not the badge: the badge starts offscreen and would never intersect
+  const inView = useInView(sectionRef, { once: true, amount: 0.3 });
   const [flipped, setFlipped] = useState(false);
   const typed = useTyping(phrases);
   const x = useMotionValue(0);
@@ -71,6 +74,7 @@ export default function IdCardSection() {
   return (
     <section
       id="identity"
+      ref={sectionRef}
       className="relative min-h-[100dvh] overflow-hidden text-[#f7d5e5]"
       style={{
         background:
@@ -82,8 +86,7 @@ export default function IdCardSection() {
         <motion.span
           key={word}
           initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           transition={{ delay: 0.3 + i * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className={`absolute z-10 select-none font-extrabold tracking-tight text-[clamp(1.3rem,4.6vw,4.2rem)] leading-none [text-shadow:0_4px_24px_rgba(0,0,0,0.35)] ${pos}`}
         >
@@ -108,8 +111,7 @@ export default function IdCardSection() {
             onTap={() => setFlipped((f) => !f)}
             whileTap={{ cursor: 'grabbing' }}
             initial={{ y: -520 }}
-            whileInView={{ y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            animate={{ y: inView ? 0 : -520 }}
             transition={{ type: 'spring', stiffness: 70, damping: 11, delay: 0.2 }}
             className="relative flex flex-col items-center pointer-events-auto cursor-grab"
             data-cursor="button"
